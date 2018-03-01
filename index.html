@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Slacker Messaging App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" crossorigin="anonymous" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Roboto">
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="/styles.css">
+
+    <!-- scripts -->
+    <script type="text/javascript" src="/assets/js/env.js"></script>
+    <script type="text/javascript" src="/script.js"></script>
+</head>
+<body>
+    <main>
+        <article id="login-container">
+            <div id="login-inner">
+                <div id="logo-container">
+                    <i id="logo" class="fa fa-comments"></i>
+                </div>
+
+                <form id="login-form" method="post" action="/" novalidate>
+                    <div class="input-container">
+                        <label form="email-input">Email Address:</label>
+                        <input type="email" id="email-input" name="email" autocomplete="email">
+                    </div>
+
+                    <div class="input-container">
+                        <label form="password-input">Password:</label>
+                        <input type="password" id="password-input" name="password">
+                    </div>
+
+                    <div class="input-container">
+                        <button type="submit" id="login">Login<i class="fa fa-sign-in"></i></button>
+                    </div>
+                </form>
+            </div>
+
+            <a id="create-account" href="">Create Account</a>
+        </article>
+    </main>
+</body>
+</html>
