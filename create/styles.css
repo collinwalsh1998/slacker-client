@@ -67,6 +67,10 @@
     margin-left: -1px;
 }
 
+.invalid {
+    border: 1px solid red;
+}
+
 #create {
     display: block;
     width: 100%;
