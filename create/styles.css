@@ -1,4 +1,4 @@
-#login-container {
+#create-container {
     position: absolute;
     width: 300px;
     left: 0;
@@ -11,7 +11,7 @@
     -webkit-transform: translateY(-50%);
 }
 
-#login-inner {
+#create-inner {
     background-color: white;
     border: 1px solid #CCC;
     padding: 20px;
@@ -26,7 +26,7 @@
     color: #039be5;
 }
 
-#login-form {
+#create-form {
     margin-top: 20px;
 }
 
@@ -41,7 +41,7 @@
     margin-bottom: 4px;
 }
 
-#email-input, #password-input {
+.input-container input {
     display: block;
     width: 100%;
     padding: 8px;
@@ -49,7 +49,25 @@
     border-radius: 2px;
 }
 
-#login {
+#fname-input, #lname-input {
+    display: inline-block;
+    vertical-align: top;
+    width: 50%;
+    border-radius: 0;
+}
+
+#fname-input {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+}
+
+#lname-input {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    margin-left: -1px;
+}
+
+#create {
     display: block;
     width: 100%;
     border: none;
@@ -60,11 +78,11 @@
     font-weight: bold;
 }
 
-#login .fa {
+#create .fa {
     margin-left: 10px;
 }
 
-#create-account {
+#login {
     display: block;
     text-align: center;
     font-size: 14px;

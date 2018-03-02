@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login | Slacker Messaging App</title>
+    <title>Create Account | Slacker Messaging App</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" crossorigin="anonymous" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=">
@@ -10,21 +10,27 @@
 
     <!-- styles -->
     <link rel="stylesheet" href="/assets/css/custom.css">
-    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="/create/styles.css">
 
     <!-- scripts -->
     <script type="text/javascript" src="/assets/js/env.js"></script>
-    <script type="text/javascript" src="/script.js"></script>
+    <script type="text/javascript" src="/create/script.js"></script>
 </head>
 <body>
     <main>
-        <article id="login-container">
-            <div id="login-inner">
+        <article id="create-container">
+            <div id="create-inner">
                 <div id="logo-container">
                     <i id="logo" class="fa fa-comments"></i>
                 </div>
 
-                <form id="login-form" novalidate>
+                <form id="create-form" novalidate>
+                    <div class="input-container">
+                        <label form="fname-input">Name (first and last):</label>
+                        <input type="text" id="fname-input" name="fname" autocomplete="given-name"><!--
+                        --><input type="text" id="lname-input" name="lname" autocomplete="family-name">
+                    </div>
+
                     <div class="input-container">
                         <label form="email-input">Email Address:</label>
                         <input type="email" id="email-input" name="email" autocomplete="email">
@@ -36,12 +42,17 @@
                     </div>
 
                     <div class="input-container">
-                        <button type="submit" id="login">Login<i class="fa fa-sign-in"></i></button>
+                        <label form="password-again-input">Password Again:</label>
+                        <input type="password" id="password-again-input" name="password-again">
+                    </div>
+
+                    <div class="input-container">
+                        <button type="submit" id="create">Create<i class="fa fa-sign-in"></i></button>
                     </div>
                 </form>
             </div>
 
-            <a id="create-account" href="/create">Create Account</a>
+            <a id="login" href="/">Login</a>
         </article>
     </main>
 </body>
