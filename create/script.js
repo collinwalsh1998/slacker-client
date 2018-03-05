@@ -26,16 +26,17 @@
                 formData[formInputs[i].name] = formInputs[i].value;
             }
 
-            request.open("POST", window.env.apiUrl + "/", true);
+            request.open("POST", window.env.apiUrl + "/createUser", true);
             request.setRequestHeader('Content-Type', 'application/json');
             request.send(JSON.stringify(formData));
 
             request.onload = function() {
+                var response = JSON.parse(request.responseText);
+
                 if(request.status === 200) {
-                    var response = JSON.parse(request.responseText);
                     console.log(response);
                 } else {
-                    console.error("error");
+                    console.error(response);
                 }
             }
 
