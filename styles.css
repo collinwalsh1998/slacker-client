@@ -1,3 +1,21 @@
+#error-container {
+    background-color: #D8000C;
+    padding: 8px 0;
+    display: none;
+}
+
+#error-container.show {
+    display: block;
+}
+
+#error-message {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-size: 14px;
+}
+
 #login-container {
     position: absolute;
     width: 300px;
