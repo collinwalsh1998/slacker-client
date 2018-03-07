@@ -18,6 +18,13 @@
     function createAccount(event) {
         event.preventDefault();
 
+        var errorContainer = document.getElementById("error-container");
+        var errorMessage = document.getElementById("error-message");
+
+        //reset error elements when the user attempts to create account
+        errorContainer.classList.remove("show");
+        errorMessage.textContent = "";
+
         if(validateForm()) {
             var request = new XMLHttpRequest();
             var formData = {};
@@ -34,14 +41,17 @@
                 var response = JSON.parse(request.responseText);
 
                 if(request.status === 200) {
-                    console.log(response);
+                    localStorage.setItem("user", request.responseText);
+                    window.location.href = "/conversations";
                 } else {
-                    console.error(response);
+                    errorMessage.textContent = response.message;
+                    errorContainer.classList.add("show");
                 }
             }
 
             request.onerror = function() {
-                console.error("error");
+                errorMessage.textContent = "An error occurred creating the user";
+                errorContainer.classList.add("show");
             }
         }
     }
