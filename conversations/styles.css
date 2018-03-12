@@ -1,0 +1,104 @@
+#error-container {
+    background-color: #D8000C;
+    padding: 8px 0;
+    display: none;
+}
+
+#error-container.show {
+    display: block;
+}
+
+#error-message {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    color: white;
+    font-size: 14px;
+    text-align: center;
+}
+
+#create-conversation-container {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-top: 1px solid #CCC;
+    padding: 10px;
+}
+
+#conversation-users {
+
+}
+
+.user {
+    margin-bottom: 10px;
+}
+
+.user-email {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 26px);
+    font-size: 16px;
+    line-height: 20px;
+    word-wrap: break-word;
+}
+
+.user .fa {
+    display: inline-block;
+    vertical-align: top;
+    width: 16px;
+    font-size: 20px;
+    line-height: 18px;
+    color: #888;
+    margin-left: 10px;
+    float: right;
+}
+
+#create-conversation-form {
+
+}
+
+#email-input {
+    display: inline-block;
+    vertical-align: top;
+    width: calc(100% - 60px);
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 2px;
+}
+
+.invalid {
+    border: 1px solid red;
+}
+
+#add-email {
+    display: inline-block;
+    vertical-align: top;
+    width: 30%;
+    background-color: #659157;
+    border: none;
+    height: 36px;
+    width: 50px;
+    margin-left: 10px;
+    border-radius: 2px;
+}
+
+#add-email .fa {
+    font-size: 22px;
+    line-height: normal;
+    color: white;
+}
+
+#create-conversation {
+    background-color: #039be5;
+    color: white;
+    width: 100%;
+    border: none;
+    margin-top: 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 0;
+    text-align: center;
+}

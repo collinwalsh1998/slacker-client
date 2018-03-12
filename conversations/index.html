@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Conversations | Slacker Messaging App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" crossorigin="anonymous" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Roboto">
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="/conversations/styles.css">
+
+    <!-- scripts -->
+    <script type="text/javascript" src="/assets/js/env.js"></script>
+    <script type="text/javascript" src="/conversations/script.js"></script>
+</head>
+<body>
+    <main>
+        <div id="error-container">
+            <p id="error-message"></p>
+        </div>
+
+        <article id="conversations-container">
+
+        </article>
+
+        <article id="create-conversation-container">
+            <div id="conversation-users">
+
+            </div>
+
+            <form id="create-conversation-form" novalidate>
+                <div class="input-container">
+                    <input type="email" id="email-input" name="email" placeholder="Enter an email"><!--
+                    --><button type="button" id="add-email"><i class="fa fa-plus"></i></button>
+                </div>
+
+                <div class="input-container">
+                    <button type="submit" id="create-conversation">Create Conversation</button>
+                </div>
+            </form>
+        </article>
+    </main>
+</body>
+</html>
