@@ -4,6 +4,8 @@
     var form;
     var formInputs;
 
+    var CacheService = new cacheService();
+
     document.addEventListener("DOMContentLoaded", function() {
         form = document.getElementById("login-form");
         formInputs = document.querySelectorAll(".input-container input");
@@ -41,7 +43,7 @@
                 var response = JSON.parse(request.responseText);
 
                 if(request.status === 200) {
-                    localStorage.setItem("user", request.responseText);
+                    CacheService.setCache("user", response, new Date());
                     window.location.href = "/conversations";
                 } else {
                     errorMessage.textContent = response.message;
