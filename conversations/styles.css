@@ -17,6 +17,33 @@
     text-align: center;
 }
 
+#conversations-container {
+    background-color: white;
+}
+
+.conversation {
+    border-bottom: 1px solid #CCC;
+}
+
+.conversation-link {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    color: black;
+    text-decoration: none;
+}
+
+.conversation-users {
+    font-size: 18px;
+    font-weight: normal;
+}
+
+.conversation-timestamp {
+    color: #888;
+    font-size: 14px;
+    margin-top: 6px;
+}
+
 #create-conversation-container {
     position: fixed;
     bottom: 0;

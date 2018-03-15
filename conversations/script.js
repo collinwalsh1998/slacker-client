@@ -1,17 +1,23 @@
 (function() {
     "use strict";
 
+    var conversationsContainer;
     var conversationUsers;
     var emailInput;
     var addEmailButton;
     var conversationForm;
     var emailList = [];
 
+    var CacheService = new cacheService();
+
     document.addEventListener("DOMContentLoaded", function() {
+        conversationsContainer = document.getElementById("conversations-container");
         conversationUsers = document.getElementById("conversation-users");
         emailInput = document.getElementById("email-input");
         addEmailButton = document.getElementById("add-email");
         conversationForm = document.getElementById("create-conversation-form");
+
+        getData();
 
         emailInput.addEventListener("input", removeError);
         addEmailButton.addEventListener("click", addEmail);
@@ -85,7 +91,12 @@
             var response = JSON.parse(request.responseText);
 
             if(request.status === 200) {
-                console.log("added conversation");
+                if(CacheService.cacheExists("conversations")) {
+                    CacheService.updateCache("conversations", response, new Date());
+                    return;
+                }
+
+                CacheService.setCache("conversations", response, new Date());
             } else {
                 errorMessage.textContent = response.message;
                 errorContainer.classList.add("show");
@@ -108,5 +119,50 @@
         }
 
         return valid;
+    }
+
+    function getData() {
+        var conversationData = CacheService.getCache("conversations");
+
+        if(conversationData) {
+            console.log("cached data fetched");
+
+            if(CacheService.cacheExpired(conversationData.timeCached)) {
+                console.log("cache expired");
+            } else {
+                console.log("cache not expired");
+            }
+        } else {
+            console.log("get all data");
+        }
+
+        addConversations(conversationData.data);
+    }
+
+    function addConversations(data) {
+        console.log(data);
+
+        for(var i = 0; i < data.length; i++) {
+            var userEmails = "";
+
+            for(var j = 0; j < data[i].users.length; j++) {
+                if(j == (data[i].users.length - 1)) {
+                    userEmails += data[i].users[j].email;
+                    break;
+                }
+
+                userEmails += data[i].users[j].email + ", ";
+            }
+
+            var conversationContainer = document.createElement("div");
+            conversationContainer.classList.add("conversation");
+            conversationContainer.innerHTML =
+            "<a class='conversation-link' href='/messages?id=" + data[i].conversation_id + "'>" +
+                "<h2 class='conversation-users'>" + userEmails + "</h2>" +
+                "<p class='conversation-timestamp'>" + data[i].updated_at + "</p>" +
+            "</a>";
+
+            conversationsContainer.appendChild(conversationContainer);
+        }
     }
 })();
