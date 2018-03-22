@@ -18,10 +18,10 @@
         return cacheData;
     }
 
-    //cached data will always be set in an array
+    //cached data will always be set in an array. this makes it easy to update an already cached object
     cacheService.prototype.setCache = function(name, data, timeCached) {
         var cacheData = {};
-        cacheData.data = [data];
+        cacheData.data = data;
         cacheData.timeCached = timeCached;
         cacheData = JSON.stringify(cacheData);
         cacheData = LZString.compressToUTF16(cacheData);

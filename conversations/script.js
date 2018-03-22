@@ -7,8 +7,11 @@
     var addEmailButton;
     var conversationForm;
     var emailList = [];
+    var errorContainer;
+    var errorMessage;
 
     var CacheService = new cacheService();
+    var userData = CacheService.getCache("user");
 
     document.addEventListener("DOMContentLoaded", function() {
         conversationsContainer = document.getElementById("conversations-container");
@@ -16,6 +19,8 @@
         emailInput = document.getElementById("email-input");
         addEmailButton = document.getElementById("add-email");
         conversationForm = document.getElementById("create-conversation-form");
+        errorContainer = document.getElementById("error-container");
+        errorMessage = document.getElementById("error-message");
 
         getData();
 
@@ -71,12 +76,12 @@
             return;
         }
 
-        var errorContainer = document.getElementById("error-container");
-        var errorMessage = document.getElementById("error-message");
-
         //reset error elements when the user attempts to create a conversation
         errorContainer.classList.remove("show");
         errorMessage.textContent = "";
+
+        //add current user into list of users in new conversation
+        emailList.push(userData.data[0].email);
 
         var request = new XMLHttpRequest();
         var formData = {
@@ -91,12 +96,16 @@
             var response = JSON.parse(request.responseText);
 
             if(request.status === 200) {
+                emailList.length = [];
+                conversationUsers.innerHTML = "";
+
                 if(CacheService.cacheExists("conversations")) {
                     CacheService.updateCache("conversations", response, new Date());
-                    return;
+                } else {
+                    CacheService.setCache("conversations", response, new Date());
                 }
 
-                CacheService.setCache("conversations", response, new Date());
+                addConversationsToDom(response);
             } else {
                 errorMessage.textContent = response.message;
                 errorContainer.classList.add("show");
@@ -122,26 +131,81 @@
     }
 
     function getData() {
-        var conversationData = CacheService.getCache("conversations");
-
-        if(conversationData) {
-            console.log("cached data fetched");
+        if(CacheService.cacheExists("conversations")) {
+            var conversationData = CacheService.getCache("conversations");
 
             if(CacheService.cacheExpired(conversationData.timeCached)) {
-                console.log("cache expired");
+                //cache exists but is expired. verify data and pull any new data
+                console.log("cache exists but is expired. verify data and pull any new data");
             } else {
-                console.log("cache not expired");
+                //cache exists. pull from that and then check for new data
+                console.log("cache exists. pull from that and then check for new data");
+
+                var lastConversationId = conversationData.data[conversationData.data.length - 1].conversation_id;
+                getNewConversations(lastConversationId);
+
+                //add existing cache into the DOM
+                addConversationsToDom(conversationData.data);
             }
         } else {
             console.log("get all data");
+            //get all data
+            getAllConversations();
         }
-
-        addConversations(conversationData.data);
     }
 
-    function addConversations(data) {
-        console.log(data);
+    function getAllConversations() {
+        var userId = userData.data[0].user_id;
+        var request = new XMLHttpRequest();
 
+        request.open("GET", window.env.apiUrl + "/getAllConversations/" + userId, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(null);
+
+        request.onload = function() {
+            var response = JSON.parse(request.responseText);
+
+            if(request.status === 200) {
+                CacheService.setCache("conversations", response, new Date());
+                addConversationsToDom(response);
+            } else {
+                errorMessage.textContent = response.message;
+                errorContainer.classList.add("show");
+            }
+        }
+
+        request.onerror = function() {
+            errorMessage.textContent = "An error occurred creating conversation";
+            errorContainer.classList.add("show");
+        }
+    }
+
+    function getNewConversations(conversationId) {
+        var request = new XMLHttpRequest();
+
+        request.open("GET", window.env.apiUrl + "/getNewConversations/" + conversationId, true);
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(null);
+
+        request.onload = function() {
+            var response = JSON.parse(request.responseText);
+
+            if(request.status === 200) {
+                CacheService.updateCache("conversations", response, new Date());
+                addConversationsToDom(response);
+            } else {
+                errorMessage.textContent = response.message;
+                errorContainer.classList.add("show");
+            }
+        }
+
+        request.onerror = function() {
+            errorMessage.textContent = "An error occurred creating conversation";
+            errorContainer.classList.add("show");
+        }
+    }
+
+    function addConversationsToDom(data) {
         for(var i = 0; i < data.length; i++) {
             var userEmails = "";
 
