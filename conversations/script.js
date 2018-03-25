@@ -9,8 +9,12 @@
     var emailList = [];
     var errorContainer;
     var errorMessage;
+    var createIcon;
+    var createConversationContainer;
+    var createUnderlay;
 
     var CacheService = new cacheService();
+    var DateService = new dateService();
     var userData = CacheService.getCache("user");
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -21,12 +25,17 @@
         conversationForm = document.getElementById("create-conversation-form");
         errorContainer = document.getElementById("error-container");
         errorMessage = document.getElementById("error-message");
+        createIcon = document.getElementById("create-icon-container");
+        createConversationContainer = document.getElementById("create-conversation-container");
+        createUnderlay = document.getElementById("create-underlay");
 
         getData();
 
         emailInput.addEventListener("input", removeError);
         addEmailButton.addEventListener("click", addEmail);
         conversationForm.addEventListener("submit", createConversation);
+        createIcon.addEventListener("click", openConversation);
+        createUnderlay.addEventListener("click", closeConversation);
     });
 
     function removeError() {
@@ -69,6 +78,20 @@
         container.parentNode.removeChild(container);
     }
 
+    function openConversation() {
+        createUnderlay.classList.add("show");
+        createConversationContainer.classList.add("show");
+    }
+
+    function closeConversation() {
+        emailList = [];
+        conversationUsers.innerHTML = "";
+        emailInput.value = "";
+
+        createUnderlay.classList.remove("show");
+        createConversationContainer.classList.remove("show");
+    }
+
     function createConversation(event) {
         event.preventDefault();
 
@@ -96,8 +119,7 @@
             var response = JSON.parse(request.responseText);
 
             if(request.status === 200) {
-                emailList.length = [];
-                conversationUsers.innerHTML = "";
+                closeConversation();
 
                 if(CacheService.cacheExists("conversations")) {
                     CacheService.updateCache("conversations", response, new Date());
@@ -175,7 +197,7 @@
         }
 
         request.onerror = function() {
-            errorMessage.textContent = "An error occurred creating conversation";
+            errorMessage.textContent = "An error occurred getting conversations";
             errorContainer.classList.add("show");
         }
     }
@@ -200,7 +222,7 @@
         }
 
         request.onerror = function() {
-            errorMessage.textContent = "An error occurred creating conversation";
+            errorMessage.textContent = "An error occurred getting conversations";
             errorContainer.classList.add("show");
         }
     }
@@ -223,7 +245,7 @@
             conversationContainer.innerHTML =
             "<a class='conversation-link' href='/messages?id=" + data[i].conversation_id + "'>" +
                 "<h2 class='conversation-users'>" + userEmails + "</h2>" +
-                "<p class='conversation-timestamp'>" + data[i].updated_at + "</p>" +
+                "<p class='conversation-timestamp'>" + DateService.formatDatetime(data[i].updated_at) + "</p>" +
             "</a>";
 
             conversationsContainer.appendChild(conversationContainer);
