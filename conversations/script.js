@@ -203,9 +203,10 @@
     }
 
     function getNewConversations(conversationId) {
+        var userId = userData.data[0].user_id;
         var request = new XMLHttpRequest();
 
-        request.open("GET", window.env.apiUrl + "/getNewConversations/" + conversationId, true);
+        request.open("GET", window.env.apiUrl + "/getNewConversations/" + userId + "/" + conversationId, true);
         request.setRequestHeader('Content-Type', 'application/json');
         request.send(null);
 
