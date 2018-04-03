@@ -3,12 +3,16 @@
 
     var form;
     var formInputs;
+    var errorContainer;
+    var errorMessage;
 
     var CacheService = new cacheService();
 
     document.addEventListener("DOMContentLoaded", function() {
         form = document.getElementById("create-form");
         formInputs = document.querySelectorAll(".input-container input");
+        errorContainer = document.getElementById("error-container");
+        errorMessage = document.getElementById("error-message");
 
         form.addEventListener("submit", createAccount);
 
@@ -19,13 +23,6 @@
 
     function createAccount(event) {
         event.preventDefault();
-
-        var errorContainer = document.getElementById("error-container");
-        var errorMessage = document.getElementById("error-message");
-
-        //reset error elements when the user attempts to create account
-        errorContainer.classList.remove("show");
-        errorMessage.textContent = "";
 
         if(validateForm()) {
             var request = new XMLHttpRequest();
@@ -46,20 +43,29 @@
                     CacheService.setCache("user", response, new Date());
                     window.location.href = "/conversations";
                 } else {
-                    errorMessage.textContent = response.message;
-                    errorContainer.classList.add("show");
+                    showError(response.message);
                 }
             }
 
             request.onerror = function() {
-                errorMessage.textContent = "An error occurred creating the user";
-                errorContainer.classList.add("show");
+                showError("An error occurred creating the user");
             }
         }
     }
 
     function removeError() {
         this.classList.remove("invalid");
+    }
+
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorContainer.classList.add("show");
+        setTimeout(hideError, 5000);
+    }
+
+    function hideError() {
+        errorMessage.textContent = "";
+        errorContainer.classList.remove("show");
     }
 
     function validateForm() {

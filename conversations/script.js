@@ -42,6 +42,17 @@
         this.classList.remove("invalid");
     }
 
+    function showError(message) {
+        errorMessage.textContent = message;
+        errorContainer.classList.add("show");
+        setTimeout(hideError, 5000);
+    }
+
+    function hideError() {
+        errorMessage.textContent = "";
+        errorContainer.classList.remove("show");
+    }
+
     function addEmail() {
         //validate email before adding it to the conversation list
         if(validateForm()) {
@@ -99,10 +110,6 @@
             return;
         }
 
-        //reset error elements when the user attempts to create a conversation
-        errorContainer.classList.remove("show");
-        errorMessage.textContent = "";
-
         //add current user into list of users in new conversation
         emailList.push(userData.data[0].email);
 
@@ -129,14 +136,12 @@
 
                 addConversationsToDom(response);
             } else {
-                errorMessage.textContent = response.message;
-                errorContainer.classList.add("show");
+                showError(response.message);
             }
         }
 
         request.onerror = function() {
-            errorMessage.textContent = "An error occurred creating conversation";
-            errorContainer.classList.add("show");
+            showError("An error occurred creating conversation");
         }
     }
 
@@ -194,14 +199,12 @@
                 CacheService.setCache("conversations", response, new Date());
                 addConversationsToDom(response);
             } else {
-                errorMessage.textContent = response.message;
-                errorContainer.classList.add("show");
+                showError(response.message);
             }
         }
 
         request.onerror = function() {
-            errorMessage.textContent = "An error occurred getting conversations";
-            errorContainer.classList.add("show");
+            showError("An error occurred getting conversations");
         }
     }
 
@@ -224,14 +227,12 @@
                 CacheService.updateCache("conversations", response, new Date());
                 addConversationsToDom(response);
             } else {
-                errorMessage.textContent = response.message;
-                errorContainer.classList.add("show");
+                showError(response.message);
             }
         }
 
         request.onerror = function() {
-            errorMessage.textContent = "An error occurred getting conversations";
-            errorContainer.classList.add("show");
+            showError("An error occurred getting conversations");
         }
     }
 
