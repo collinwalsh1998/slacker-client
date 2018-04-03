@@ -157,21 +157,20 @@
             var conversationData = CacheService.getCache("conversations");
 
             if(CacheService.cacheExpired(conversationData.timeCached)) {
-                //cache exists but is expired. verify data and pull any new data
-                console.log("cache exists but is expired. verify data and pull any new data");
-            } else {
-                //cache exists. pull from that and then check for new data
-                console.log("cache exists. pull from that and then check for new data");
+                //cache exists but is expired. currently, I have not decided a way to verify the expired cache before using it, so we will just us it for the time being and pull new data
+                addConversationsToDom(conversationData.data);
 
                 var lastConversationId = conversationData.data[conversationData.data.length - 1].conversation_id;
                 getNewConversations(lastConversationId);
-
-                //add existing cache into the DOM
+            } else {
+                //pull data from cache and then check for new data
                 addConversationsToDom(conversationData.data);
+
+                var lastConversationId = conversationData.data[conversationData.data.length - 1].conversation_id;
+                getNewConversations(lastConversationId);
             }
         } else {
-            console.log("get all data");
-            //get all data
+            //there is no cache. get all conversation data from server
             getAllConversations();
         }
     }
@@ -188,6 +187,10 @@
             var response = JSON.parse(request.responseText);
 
             if(request.status === 200) {
+                if(!response.length) {
+                    return;
+                }
+
                 CacheService.setCache("conversations", response, new Date());
                 addConversationsToDom(response);
             } else {
@@ -214,6 +217,10 @@
             var response = JSON.parse(request.responseText);
 
             if(request.status === 200) {
+                if(!response.length) {
+                    return;
+                }
+
                 CacheService.updateCache("conversations", response, new Date());
                 addConversationsToDom(response);
             } else {
