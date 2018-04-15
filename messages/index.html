@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Messages | Slacker Messaging App</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" crossorigin="anonymous" integrity="sha256-oSrCnRYXvHG31SBifqP2PM1uje7SJUyX0nTwO2RJV54=">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" crossorigin="anonymous" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Roboto">
+
+    <!-- styles -->
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="/messages/styles.css">
+
+    <!-- scripts -->
+    <script type="text/javascript" src="/assets/js/env.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js" crossorigin="anonymous" integrity="sha256-nRoO8HoupfqozUr7YKBRgHXmdx40Hl/04OSBzv7e7L8="></script>
+    <script type="text/javascript" src="/assets/js/cache-service.js"></script>
+    <script type="text/javascript" src="/assets/js/date-service.js"></script>
+    <script type="text/javascript" src="/messages/script.js"></script>
+</head>
+<body>
+    <main>
+        <div id="error-container">
+            <p id="error-message"></p>
+        </div>
+
+        <article id="messages-container">
+
+        </article>
+
+        <article id="new-message-container">
+            <form id="new-message-form" novalidate>
+                <div class="input-container">
+                    <div id="message-input" name="message" placeholder="Enter message" contenteditable="true"></div><!--
+                    --><button type="submit" id="send-message">Send</button>
+                </div>
+            </form>
+        </article>
+    </main>
+</body>
+</html>

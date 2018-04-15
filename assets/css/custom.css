@@ -11,7 +11,7 @@ h1, h2, h3, h4, h5, h6, button {
     font-family: "Lato", sans-serif;
 }
 
-p, li, a, label, input, textarea {
+p, li, a, label, input, textarea, div[contenteditable] {
     font-family: "Roboto", sans-serif;
 }
 
@@ -28,7 +28,7 @@ img {
     max-height: 100%;
 }
 
-input, textarea {
+input, textarea, div[contenteditable] {
     border: 1px solid #CCC;
     box-sizing: border-box;
 }
