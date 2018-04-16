@@ -24,7 +24,55 @@
 }
 
 #messages-container {
-    
+    padding: 10px;
+    margin-bottom: 56px;
+}
+
+.message {
+    display: block;
+    max-width: 70%;
+    margin-bottom: 16px;
+}
+
+#messages-container .message:last-child {
+    margin-bottom: 0;
+}
+
+.message.send {
+    margin-left: auto;
+    text-align: right;
+}
+
+.message.receive {
+    margin-right: auto;
+    text-align: left;
+}
+
+.message-content {
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    line-height: normal;
+    border-radius: 12px;
+    padding: 6px 10px;
+    text-align: left;
+    white-space: pre-wrap;
+}
+
+.message.send .message-content {
+    background-color: #039be5;
+    color: white;
+}
+
+.message.receive .message-content {
+    background-color: white;
+    color: black;
+}
+
+.message-timestamp {
+    font-size: 12px;
+    color: #666;
+    margin-top: 6px;
 }
 
 #new-message-container {

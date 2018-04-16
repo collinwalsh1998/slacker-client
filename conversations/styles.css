@@ -121,7 +121,6 @@
     width: calc(100% - 26px);
     font-size: 16px;
     line-height: 20px;
-    word-wrap: break-word;
 }
 
 .user .fa {

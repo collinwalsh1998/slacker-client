@@ -31,7 +31,8 @@
     cacheService.prototype.updateCache = function(name, newData, newTimeCached) {
         var cacheData = this.getCache(name);
 
-        cacheData.data.push(newData);
+        //cacheData.data.push(newData);
+        cacheData.data.push(newData[0]);
         cacheData.timeCached = newTimeCached;
 
         cacheData = JSON.stringify(cacheData);
