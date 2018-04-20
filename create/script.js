@@ -14,17 +14,28 @@
         errorContainer = document.getElementById("error-container");
         errorMessage = document.getElementById("error-message");
 
-        form.addEventListener("submit", createAccount);
+        form.addEventListener("submit", startCreateAccount);
 
         for(var i = 0; i < formInputs.length; i++) {
             formInputs[i].addEventListener("input", removeError);
         }
     });
 
-    function createAccount(event) {
+    function startCreateAccount(event) {
         event.preventDefault();
 
         if(validateForm()) {
+            createAccount().then(function(data) {
+                CacheService.setCache("user", data.message, new Date());
+                window.location.href = "/conversations";
+            }).catch(function(error) {
+                showError(error.message);
+            });
+        }
+    }
+
+    function createAccount() {
+        return new Promise(function(resolve, reject) {
             var request = new XMLHttpRequest();
             var formData = {};
 
@@ -33,24 +44,23 @@
             }
 
             request.open("POST", window.env.apiUrl + "/createUser", true);
-            request.setRequestHeader('Content-Type', 'application/json');
+            request.setRequestHeader("Content-Type", "application/json");
             request.send(JSON.stringify(formData));
 
             request.onload = function() {
                 var response = JSON.parse(request.responseText);
 
                 if(request.status === 200) {
-                    CacheService.setCache("user", response, new Date());
-                    window.location.href = "/conversations";
+                    return resolve({ success: true, message: response });
                 } else {
-                    showError(response.message);
+                    return reject({ success: false, message: response.message });
                 }
             }
 
             request.onerror = function() {
-                showError("An error occurred creating the user");
+                return reject({ success: false, message: "An error occurred creating the user" });
             }
-        }
+        });
     }
 
     function removeError() {
