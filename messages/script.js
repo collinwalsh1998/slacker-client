@@ -22,7 +22,7 @@
         getData();
 
         messageInput.addEventListener("input", removeError);
-        messageForm.addEventListener("submit", sendMessage);
+        messageForm.addEventListener("submit", startSendMessage);
     });
 
     function removeError() {
@@ -59,76 +59,89 @@
             }
         } else {
             //there is no cache. get all message data from server
-            getAllMessages();
+            getAllMessages().then(function(data) {
+                if(!data.message.length) {
+                    return;
+                }
+
+                CacheService.setCache(threadId, data.message, new Date());
+                addMessagesToDom(data.message);
+            }).catch(function(error) {
+                showError(error.message);
+            });
         }
     }
 
     function getAllMessages() {
-        var request = new XMLHttpRequest();
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
 
-        request.open("GET", window.env.apiUrl + "/getAllMessages/" + threadId, true);
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(null);
+            request.open("GET", window.env.apiUrl + "/getAllMessages/" + threadId, true);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(null);
 
-        request.onload = function() {
-            var response = JSON.parse(request.responseText);
+            request.onload = function() {
+                var response = JSON.parse(request.responseText);
 
-            if(request.status === 200) {
-                if(!response.length) {
-                    return;
+                if(request.status === 200) {
+                    return resolve({ success: true, message: response });
+                } else {
+                    return reject({ success: false, message: response.message });
                 }
-
-                CacheService.setCache(threadId, response, new Date());
-                addMessagesToDom(response);
-            } else {
-                showError(response.message);
             }
-        }
 
-        request.onerror = function() {
-            showError("An error occurred getting all messages");
-        }
+            request.onerror = function() {
+                return reject({ success: false, message: "An error occurred getting messages" });
+            }
+        });
     }
 
-    function sendMessage(event) {
+    function startSendMessage(event) {
         event.preventDefault();
 
-        if(!validateMessage()) {
-            return;
-        }
-
-        var request = new XMLHttpRequest();
-        var formData = {
-            thread_id: threadId,
-            sender: userData.data[0].email,
-            message: messageInput.innerText
-        };
-        
-        request.open("POST", window.env.apiUrl + "/sendMessage", true);
-        request.setRequestHeader('Content-Type', 'application/json');
-        request.send(JSON.stringify(formData));
-
-        request.onload = function() {
-            var response = JSON.parse(request.responseText);
-
-            if(request.status === 200) {
+        if(validateMessage()) {
+            sendMessage().then(function(data) {
                 if(CacheService.cacheExists(threadId)) {
-                    CacheService.updateCache(threadId, response, new Date());
+                    CacheService.updateCache(threadId, data.message, new Date());
                 } else {
-                    CacheService.setCache(threadId, response, new Date());
+                    CacheService.setCache(threadId, data.message, new Date());
                 }
 
                 messageInput.innerText = "";
+                addMessagesToDom(data.message);
+            }).catch(function(error) {
+                showError(error.message);
+            });
+        }
+    }
 
-                addMessagesToDom(response);
-            } else {
-                showError(response.message);
+    function sendMessage() {
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+            var formData = {
+                thread_id: threadId,
+                sender: userData.data[0].email,
+                message: messageInput.innerText
+            };
+            
+            request.open("POST", window.env.apiUrl + "/sendMessage", true);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(JSON.stringify(formData));
+    
+            request.onload = function() {
+                var response = JSON.parse(request.responseText);
+    
+                if(request.status === 200) {
+                    return resolve({ success: true, message: response });
+                } else {
+                    return reject({ success: false, message: response.message });
+                }
             }
-        }
-
-        request.onerror = function() {
-            showError("An error occurred sending the message");
-        }
+    
+            request.onerror = function() {
+                return reject({ success: false, message: "An error occurred sending the message" });
+            }
+        });
     }
 
     
