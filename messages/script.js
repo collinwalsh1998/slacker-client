@@ -50,7 +50,12 @@
 
                 var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
                 getNewMessages(lastMessageId).then(function(data) {
-                    
+                    if(!data.message.length) {
+                        return;
+                    }
+
+                    CacheService.updateCache(threadId, data.message, new Date());
+                    addMessagesToDom(data.message);
                 }).catch(function(error) {
                     showError(error.message);
                 });
@@ -60,7 +65,12 @@
 
                 var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
                 getNewMessages(lastMessageId).then(function(data) {
-                    
+                    if(!data.message.length) {
+                        return;
+                    }
+
+                    CacheService.updateCache(threadId, data.message, new Date());
+                    addMessagesToDom(data.message);
                 }).catch(function(error) {
                     showError(error.message);
                 });
