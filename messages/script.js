@@ -48,14 +48,22 @@
                 //cache exists but is expired. currently, I have not decided a way to verify the expired cache before using it, so we will just us it for the time being and pull new data
                 addMessagesToDom(messageData.data);
 
-                /*var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
-                getNewMessages(lastMessageId);*/
+                var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
+                getNewMessages(lastMessageId).then(function(data) {
+                    
+                }).catch(function(error) {
+                    showError(error.message);
+                });
             } else {
                 //pull data from cache and then check for new data
                 addMessagesToDom(messageData.data);
 
-                /*var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
-                getNewMessages(lastMessageId);*/
+                var lastMessageId = messageData.data[messageData.data.length - 1].message_id;
+                getNewMessages(lastMessageId).then(function(data) {
+                    
+                }).catch(function(error) {
+                    showError(error.message);
+                });
             }
         } else {
             //there is no cache. get all message data from server
@@ -92,6 +100,30 @@
 
             request.onerror = function() {
                 return reject({ success: false, message: "An error occurred getting messages" });
+            }
+        });
+    }
+
+    function getNewMessages(messageId) {
+        return new Promise(function(resolve, reject) {
+            var request = new XMLHttpRequest();
+
+            request.open("GET", window.env.apiUrl + "/getNewMessages/" + threadId + "/" + messageId, true);
+            request.setRequestHeader("Content-Type", "application/json");
+            request.send(null);
+
+            request.onload = function() {
+                var response = JSON.parse(request.responseText);
+
+                if(request.status === 200) {
+                    return resolve({ success: true, message: response });
+                } else {
+                    return reject({ success: false, message: response.message });
+                }
+            }
+
+            request.onerror = function() {
+                return reject({ success: false, message: "An error occurred getting new messages" });
             }
         });
     }
